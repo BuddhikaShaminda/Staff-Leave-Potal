@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import  { BrowserRouter as Router,Route } from 'react-router-dom';
+import  { BrowserRouter as Router,Route,Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
@@ -10,9 +10,15 @@ import Footer from './component/Layout/Footer';
 import Landing from './component/Layout/Landing';
 import Register from './component/auth/register';
 import Login from './component/auth/login';
+import Dashboad from './component/auth/dashboad/Dashboad';
 import store from './store';
+import PrivateRoute from './component/common/PrivateRoute';
+import CreateProfile from './component/create-profile/CreateProfile'
+import EditProfile from './component/edite-profile/EditeProfile';
+import RequestLeave from './component/auth/Leave';
 
 import './App.css';
+import { clearCurrentProfile } from './actions/profileAction';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -28,7 +34,8 @@ if (localStorage.jwtToken) {
   if (decoded.exp < currentTime) {
     // Logout user
     store.dispatch(logoutUser());
-    // TODO: Clear current Profile
+    // Clear current Profile
+    store.dispatch(clearCurrentProfile());
 
     // Redirect to login
     window.location.href = '/login';
@@ -45,9 +52,19 @@ class App extends Component {
             <Route exact path="/" component= {Landing} />
             <div className='continer'>
               <Route exact path="/register" component= {Register} />
-            </div>
-            <div className='continer'>
               <Route exact path="/login" component= {Login} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component= {Dashboad} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/create-profile" component= {CreateProfile} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/edit-profile" component= {EditProfile} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/request-leave" component= {RequestLeave} />
+              </Switch>
             </div>
             <Footer/>    
           </div>
