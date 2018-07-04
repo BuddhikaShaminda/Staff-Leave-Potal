@@ -16,6 +16,11 @@ import PrivateRoute from './component/common/PrivateRoute';
 import CreateProfile from './component/create-profile/CreateProfile'
 import EditProfile from './component/edite-profile/EditeProfile';
 import RequestLeave from './component/auth/Leave';
+//import LeaveRequest from './component/admin/LeaveRequest';
+import LeaveRequest from './component/leaves/Leaves';
+import LeaveAccept from './component/leaves/LeaveAccept';
+import LeaveReject from './component/leaves/LeaveReject';
+
 
 import './App.css';
 import { clearCurrentProfile } from './actions/profileAction';
@@ -65,7 +70,16 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/request-leave" component= {RequestLeave} />
               </Switch>
-            </div>
+              <Switch>
+                <PrivateRoute exact path="/getrequest" component= {LeaveRequest} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/getaccept" component= {LeaveAccept} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/getreject" component= {LeaveReject} />
+              </Switch>
+            </div>   
             <Footer/>    
           </div>
         </Router>

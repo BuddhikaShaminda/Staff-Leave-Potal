@@ -10,9 +10,14 @@ const userSchema = new Schema({
         type : String,
         require : true
     },
+
     address :{
         type :String,
         requide :true
+    },
+    type :{
+        type :String,
+        default : 'Non_admin'
     },
     password :{
         type :String,
@@ -20,4 +25,4 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('user',userSchema);
+module.exports = User = mongoose.model("user",userSchema);

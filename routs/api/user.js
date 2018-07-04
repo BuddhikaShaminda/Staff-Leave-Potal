@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const gravatar = require('gravatar');
 
 const User = require('../../models/User');
 const key = require('../../config/keys');
@@ -31,11 +32,13 @@ router.post('/register',(req,res)=>{
             errors.email="Email is already exist";
             return res.status(400).json(errors);
         } else{
+          
             const newUser = new User({
                 name : req.body.name,
                 email : req.body.email,
                 address : req.body.address,
-                password : req.body.password
+                password : req.body.password,
+                type:req.body.type
             }); 
             
             bcrypt.genSalt(10,(err,salt)=> {
@@ -80,7 +83,7 @@ router.post('/login',(req,res)=>{
                         //return res.json({msg : 'successfully loged'});
 
                         //create jwt payload
-                        const payload = ({id : user.id, name : user.name});
+                        const payload = ({id : user.id, name : user.name, type:user.type});
 
                         //sign token
                         jwt.sign(payload,key.secretKey,{expiresIn : 3600},(err,token)=>{
@@ -107,7 +110,8 @@ router.get('/current',passport.authenticate('jwt',{session : false}),
         res.json({
             id  : req.user.id,
             name : req.user.name,
-            email:req.user.email
+            email:req.user.email,
+            type: req.body.type
         });
 })
 
